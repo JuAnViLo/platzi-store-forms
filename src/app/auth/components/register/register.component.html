@@ -28,8 +28,8 @@
               type="password"
             />
             <div *ngIf="isPasswordInvalid">
-              <mat-error *ngIf="passwordField.hasError('invalid_password')">
-                La contraseña debe tener un número
+              <mat-error *ngIf="passwordField.hasError('validpassword')">
+                La contraseña debe tener al menos un número
               </mat-error>
             </div>
           </mat-form-field>
@@ -40,11 +40,16 @@
           <mat-form-field>
             <mat-label>Confirm Password</mat-label>
             <input
-              placeholder="password"
-              formControlName="password"
+              placeholder="Confirm password"
+              formControlName="confirmPassword"
               matInput
               type="password"
             />
+            <div *ngIf="form.touched && form.errors">
+              <mat-error *ngIf="form.hasError('matchpassword')">
+                Las contraseñas deben ser iguales
+              </mat-error>
+            </div>
           </mat-form-field>
         </div>
       </div>
