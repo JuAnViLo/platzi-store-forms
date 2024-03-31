@@ -1,114 +1,112 @@
-<form [formGroup]="form" (ngSubmit)="save()">
-  <p>
-    Name: {{ nameField.valid }}
-    <input
-      [class.is-valid]="isNameFiledValid"
-      [class.is-invalid]="isNameFiledInvalid"
-      type="text"
-      formControlName="nameField"
-    />
-    <button (click)="getNameValue()" [disabled]="nameField.invalid">
-      Get value
-    </button>
-  </p>
-  <div class="messages" [class.active]="isNameFiledInvalid">
-    <mat-error>
-      <strong *ngIf="nameField.touched && nameField.hasError('required')">
-        Este campo es required
-      </strong>
-    </mat-error>
-    <mat-error>
-      <strong *ngIf="nameField.touched && nameField.hasError('maxlength')">
-        Debe tener máximo 10
-      </strong>
-    </mat-error>
-  </div>
-  <p>
-    Email: {{ emailField.value }}
-    <input type="email" formControlName="emailField" />
-  </p>
+<mat-card>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div formGroupName="fullName">
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Placeholder" formControlName="name" />
+        <mat-icon matSuffix>
+          {{ isNameFiledInvalid ? "error" : "verified" }}
+        </mat-icon>
+      </mat-form-field>
+      <div class="messages" [class.active]="isNameFiledInvalid">
+        <mat-error *ngIf="nameField.hasError('required')">
+          Este campo es required
+        </mat-error>
+        <mat-error *ngIf="nameField.hasError('maxlength')">
+          Debe tener máximo 10 caracteres
+        </mat-error>
+        <mat-error *ngIf="nameField.hasError('pattern')">
+          No debe contener caracteres
+        </mat-error>
+      </div>
+    </div>
 
-  <p>
-    Phone: {{ phoneField.value }}
-    <input type="tel" formControlName="phoneField" />
-  </p>
+    <p>
+      Email: {{ emailField.value }}
+      <input type="email" formControlName="emailField" />
+    </p>
 
-  <p>
-    Color: {{ colorField.value }}
-    <input type="color" formControlName="colorField" />
-  </p>
+    <p>
+      Phone: {{ phoneField.value }}
+      <input type="tel" formControlName="phoneField" />
+    </p>
 
-  <p>
-    Date: {{ dateField.value }}
-    <input type="date" formControlName="dateField" />
-  </p>
+    <p>
+      Color: {{ colorField.value }}
+      <input type="color" formControlName="colorField" />
+    </p>
 
-  <p>
-    Color: {{ numberField.value }}
-    <input type="number" formControlName="numberField" />
-  </p>
+    <p>
+      Date: {{ dateField.value }}
+      <input type="date" formControlName="dateField" />
+    </p>
 
-  <p>
-    Category: {{ categoryField.value }}
-    <select formControlName="categoryField">
-      <option value="category-1">Category 1</option>
-      <option value="category-2">Category 2</option>
-      <option value="category-3">Category 3</option>
-    </select>
-  </p>
+    <p>
+      Color: {{ numberField.value }}
+      <input type="number" formControlName="numberField" />
+    </p>
 
-  <p>
-    Multi Category: {{ multiCategoryField.value }}
-    <select formControlName="multiCategoryField" multiple>
-      <option value="category-1">Category 1</option>
-      <option value="category-2">Category 2</option>
-      <option value="category-3">Category 3</option>
-    </select>
-  </p>
+    <p>
+      Category: {{ categoryField.value }}
+      <select formControlName="categoryField">
+        <option value="category-1">Category 1</option>
+        <option value="category-2">Category 2</option>
+        <option value="category-3">Category 3</option>
+      </select>
+    </p>
 
-  <p>
-    Agree: {{ checkField.value }}
-    <input type="checkbox" formControlName="checkField" />
-  </p>
+    <p>
+      Multi Category: {{ multiCategoryField.value }}
+      <select formControlName="multiCategoryField" multiple>
+        <option value="category-1">Category 1</option>
+        <option value="category-2">Category 2</option>
+        <option value="category-3">Category 3</option>
+      </select>
+    </p>
 
-  <p>
-    Gender: {{ radioField.value }}
-    <label>
-      Male
-      <input
-        name="gender"
-        type="radio"
-        value="male"
-        formControlName="radioField"
-        name="radioField"
+    <p>
+      Agree: {{ checkField.value }}
+      <input type="checkbox" formControlName="checkField" />
+    </p>
 
-      />
-    </label>
-    <label>
-      Female
-      <input
-        name="gender"
-        type="radio"
-        value="female"
-        formControlName="radioField"
-        name="radioField"
-      />
-    </label>
-    <label>
-      Other
-      <input
-        name="gender"
-        type="radio"
-        value="other"
-        formControlName="radioField"
-        name="radioField"
+    <p>
+      Gender: {{ radioField.value }}
+      <label>
+        Male
+        <input
+          name="gender"
+          type="radio"
+          value="male"
+          formControlName="radioField"
+          name="radioField"
+        />
+      </label>
+      <label>
+        Female
+        <input
+          name="gender"
+          type="radio"
+          value="female"
+          formControlName="radioField"
+          name="radioField"
+        />
+      </label>
+      <label>
+        Other
+        <input
+          name="gender"
+          type="radio"
+          value="other"
+          formControlName="radioField"
+          name="radioField"
+        />
+      </label>
+    </p>
 
-      />
-    </label>
-  </p>
+    <button>Enviar</button>
+  </form>
+</mat-card>
 
-  <button>Enviar</button>
-</form>
 <!--
 <code>
   <pre> {{ form | json }} </pre>

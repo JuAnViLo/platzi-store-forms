@@ -20,15 +20,35 @@ export class BasicFormComponent implements OnInit {
 
   private buildFrom() {
     this.form = this.fb.group({
-      nameField: ['', [Validators.required, Validators.maxLength(10)]],
-      emailField: [''],
-      phoneField: [''],
+      fullName: this.fb.group({
+        name: [
+          'Juan',
+          [
+            Validators.required,
+            Validators.maxLength(10),
+            Validators.pattern(/^[a-záéíóúàèìòùüñ ]+$/gi),
+          ],
+        ],
+        lastName: [
+          '',
+          [
+            Validators.required,
+            Validators.maxLength(10),
+            Validators.pattern(/^[a-záéíóúàèìòùüñ ]+$/gi),
+          ],
+        ],
+      }),
+      emailField: ['', [Validators.required, Validators.email]],
+      phoneField: ['', Validators.required],
       colorField: [''],
       dateField: [''],
-      numberField: [''],
+      numberField: [
+        18,
+        [Validators.required, Validators.min(18), Validators.max(100)],
+      ],
       categoryField: [''],
       multiCategoryField: [''],
-      checkField: [''],
+      checkField: ['', Validators.requiredTrue],
       radioField: [''],
     });
   }
@@ -60,7 +80,7 @@ export class BasicFormComponent implements OnInit {
   }
 
   get nameField() {
-    return this.form.get('nameField');
+    return this.form.get('fullName.name');
   }
   get emailField() {
     return this.form.get('emailField');

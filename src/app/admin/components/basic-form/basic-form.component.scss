@@ -2,6 +2,7 @@ input {
   &.is-valid {
     border: 2px solid green;
   }
+
   &.is-invalid {
     border: 2px solid red;
   }
@@ -13,5 +14,11 @@ input {
 
   &.active {
     opacity: 1;
+  }
+}
+
+form {
+  mat-form-field {
+    width: 100%;
   }
 }
