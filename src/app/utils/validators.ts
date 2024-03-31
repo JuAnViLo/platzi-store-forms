@@ -5,7 +5,6 @@ import { CategoriesService } from './../core/services/categories.service';
 export class MyValidators {
   static isPriceValid(control: AbstractControl): object {
     const value = control.value;
-    console.log(value);
     if (value > 10000) {
       return { price_invalid: true };
     }
@@ -36,7 +35,6 @@ export class MyValidators {
 
       return service.checkCategory(value).pipe(
         map((response: boolean) => {
-          console.log("🚀 ~ MyValidators ~ map ~ response:", response)
           const isAvailable = response;
 
           if (!isAvailable) {
