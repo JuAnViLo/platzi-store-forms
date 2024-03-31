@@ -16,7 +16,13 @@ export class ProductEditComponent implements OnInit {
   form: FormGroup;
   id: string;
   categories: Category[] = [];
-
+  states = [
+    { name: 'Arizona', abbrev: 'AZ' },
+    { name: 'California', abbrev: 'CA' },
+    { name: 'Colorado', abbrev: 'CO' },
+    { name: 'New York', abbrev: 'NY' },
+    { name: 'Pennsylvania', abbrev: 'PA' },
+  ];
   constructor(
     private formBuilder: FormBuilder,
     private productsService: ProductsService,
@@ -37,7 +43,7 @@ export class ProductEditComponent implements OnInit {
           '🚀 ~ ProductEditComponent ~ this.productsService.getProduct ~ product:',
           product
         );
-        this.form.patchValue(product);
+        this.form.patchValue({ ...product, state: this.states[3] });
       });
     });
   }
@@ -46,12 +52,16 @@ export class ProductEditComponent implements OnInit {
     event.preventDefault();
     if (this.form.valid) {
       const product = this.form.value;
-      this.productsService
-        .updateProduct(this.id, product)
-        .subscribe((newProduct) => {
-          console.log(newProduct);
-          this.router.navigate(['./admin/products']);
-        });
+      console.log(
+        '🚀 ~ ProductEditComponent ~ saveProduct ~ product:',
+        product
+      );
+      // this.productsService
+      //   .updateProduct(this.id, product)
+      //   .subscribe((newProduct) => {
+      //     console.log(newProduct);
+      //     this.router.navigate(['./admin/products']);
+      //   });
     }
   }
 
@@ -62,6 +72,7 @@ export class ProductEditComponent implements OnInit {
       images: [''],
       categoryId: ['', [Validators.required]],
       description: ['', [Validators.required, Validators.minLength(4)]],
+      state: [''],
     });
   }
 
