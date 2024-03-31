@@ -40,7 +40,10 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button type="submit">Guardar categoría</button>
+      <button mat-raised-button color="primary" type="submit">
+        {{ categoryId ? "Editar" : "Crear" }}
+        categoría
+      </button>
     </mat-card-actions>
   </mat-card>
 </form>

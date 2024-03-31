@@ -5,7 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
@@ -19,17 +19,26 @@ import { CategoriesService } from './../../../../core/services/categories.servic
 })
 export class CategoryFormComponent implements OnInit {
   form: FormGroup;
+  categoryId: string;
 
   constructor(
     private fb: FormBuilder,
     private categoriesService: CategoriesService,
     private router: Router,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private route: ActivatedRoute
   ) {
     this.buildFrom();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.params.subscribe((params: Params) => {
+      this.categoryId = params.id;
+      if (this.categoryId) {
+        this.getCategory();
+      }
+    });
+  }
 
   private buildFrom() {
     this.form = this.fb.group({
@@ -48,7 +57,11 @@ export class CategoryFormComponent implements OnInit {
       return;
     }
 
-    this.createCategory();
+    if (this.categoryId) {
+      this.updateCategory();
+    } else {
+      this.createCategory();
+    }
   }
 
   private createCategory() {
@@ -56,6 +69,24 @@ export class CategoryFormComponent implements OnInit {
 
     this.categoriesService.createCategory(data).subscribe((rta) => {
       this.router.navigate(['./admin/categories']);
+    });
+  }
+
+  private updateCategory() {
+    const data = this.form.value;
+    console.log("🚀 ~ CategoryFormComponent ~ updateCategory ~ data:", data)
+
+    this.categoriesService
+      .updateCategory(this.categoryId, data)
+      .subscribe((rta) => {
+        console.log("🚀 ~ CategoryFormComponent ~ .subscribe ~ rta:", rta)
+        this.router.navigate(['./admin/categories']);
+      });
+  }
+
+  private getCategory() {
+    this.categoriesService.getCategory(this.categoryId).subscribe((data) => {
+      this.form.patchValue(data);
     });
   }
 

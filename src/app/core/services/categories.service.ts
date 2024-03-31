@@ -15,6 +15,10 @@ export class CategoriesService {
     return this.http.get<Category[]>(`${environment.url_api}/categories/`);
   }
 
+  getCategory(id: string) {
+    return this.http.get<Category>(`${environment.url_api}/categories/${id}`);
+  }
+
   createCategory(data: Partial<Category>) {
     return this.http.post<Category[]>(
       `${environment.url_api}/categories/`,
@@ -40,11 +44,11 @@ export class CategoriesService {
   checkCategory(name: string) {
     return this.getAllCategories().pipe(
       map((categories) => {
-        console.log("🚀 ~ CategoriesService ~ map ~ categories:", categories)
+        console.log('🚀 ~ CategoriesService ~ map ~ categories:', categories);
         const isAvailable = !categories.some(
           (category) => category.name === name
         );
-        console.log("🚀 ~ CategoriesService ~ map ~ isAvailable:", isAvailable)
+        console.log('🚀 ~ CategoriesService ~ map ~ isAvailable:', isAvailable);
         return isAvailable;
       })
     );
