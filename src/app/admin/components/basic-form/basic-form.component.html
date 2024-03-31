@@ -1,0 +1,115 @@
+<form [formGroup]="form" (ngSubmit)="save()">
+  <p>
+    Name: {{ nameField.valid }}
+    <input
+      [class.is-valid]="isNameFiledValid"
+      [class.is-invalid]="isNameFiledInvalid"
+      type="text"
+      formControlName="nameField"
+    />
+    <button (click)="getNameValue()" [disabled]="nameField.invalid">
+      Get value
+    </button>
+  </p>
+  <div class="messages" [class.active]="isNameFiledInvalid">
+    <mat-error>
+      <strong *ngIf="nameField.touched && nameField.hasError('required')">
+        Este campo es required
+      </strong>
+    </mat-error>
+    <mat-error>
+      <strong *ngIf="nameField.touched && nameField.hasError('maxlength')">
+        Debe tener máximo 10
+      </strong>
+    </mat-error>
+  </div>
+  <p>
+    Email: {{ emailField.value }}
+    <input type="email" formControlName="emailField" />
+  </p>
+
+  <p>
+    Phone: {{ phoneField.value }}
+    <input type="tel" formControlName="phoneField" />
+  </p>
+
+  <p>
+    Color: {{ colorField.value }}
+    <input type="color" formControlName="colorField" />
+  </p>
+
+  <p>
+    Date: {{ dateField.value }}
+    <input type="date" formControlName="dateField" />
+  </p>
+
+  <p>
+    Color: {{ numberField.value }}
+    <input type="number" formControlName="numberField" />
+  </p>
+
+  <p>
+    Category: {{ categoryField.value }}
+    <select formControlName="categoryField">
+      <option value="category-1">Category 1</option>
+      <option value="category-2">Category 2</option>
+      <option value="category-3">Category 3</option>
+    </select>
+  </p>
+
+  <p>
+    Multi Category: {{ multiCategoryField.value }}
+    <select formControlName="multiCategoryField" multiple>
+      <option value="category-1">Category 1</option>
+      <option value="category-2">Category 2</option>
+      <option value="category-3">Category 3</option>
+    </select>
+  </p>
+
+  <p>
+    Agree: {{ checkField.value }}
+    <input type="checkbox" formControlName="checkField" />
+  </p>
+
+  <p>
+    Gender: {{ radioField.value }}
+    <label>
+      Male
+      <input
+        name="gender"
+        type="radio"
+        value="male"
+        formControlName="radioField"
+        name="radioField"
+
+      />
+    </label>
+    <label>
+      Female
+      <input
+        name="gender"
+        type="radio"
+        value="female"
+        formControlName="radioField"
+        name="radioField"
+      />
+    </label>
+    <label>
+      Other
+      <input
+        name="gender"
+        type="radio"
+        value="other"
+        formControlName="radioField"
+        name="radioField"
+
+      />
+    </label>
+  </p>
+
+  <button>Enviar</button>
+</form>
+<!--
+<code>
+  <pre> {{ form | json }} </pre>
+</code> -->
