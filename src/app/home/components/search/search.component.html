@@ -1,0 +1,11 @@
+<label>
+  <input type="search" [formControl]="searchField" />
+</label>
+
+{{ searchField.value }}
+
+<div class="images">
+  <div class="image" *ngFor="let restult of restults">
+    <img [src]="restult.url" alt="" />
+  </div>
+</div>
