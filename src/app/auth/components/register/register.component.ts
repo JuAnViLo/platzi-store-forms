@@ -36,6 +36,8 @@ export class RegisterComponent implements OnInit {
     this.form = this.formBuilder.group(
       {
         email: ['', [Validators.required]],
+        type: ['company', [Validators.required]],
+        companyName: ['', [Validators.required]],
         password: [
           '',
           [
@@ -50,6 +52,16 @@ export class RegisterComponent implements OnInit {
         validators: MyValidators.matchPassword,
       }
     );
+
+    this.typeField.valueChanges.subscribe((value) => {
+      console.log('🚀 ~ RegisterComponent ~ buildForm ~ value:', value);
+      if (value === 'company') {
+        this.companyNameField.setValidators([Validators.required]);
+      } else {
+        this.companyNameField.setValidators(null);
+      }
+      this.companyNameField.updateValueAndValidity();
+    });
   }
 
   get isPasswordValid() {
@@ -62,5 +74,13 @@ export class RegisterComponent implements OnInit {
 
   get passwordField() {
     return this.form.get('password');
+  }
+
+  get typeField() {
+    return this.form.get('type');
+  }
+
+  get companyNameField() {
+    return this.form.get('companyName');
   }
 }

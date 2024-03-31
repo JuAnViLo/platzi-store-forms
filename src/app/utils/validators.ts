@@ -1,4 +1,6 @@
 import { AbstractControl } from '@angular/forms';
+import { map } from 'rxjs/operators';
+import { CategoriesService } from './../core/services/categories.service';
 
 export class MyValidators {
   static isPriceValid(control: AbstractControl): object {
@@ -25,6 +27,25 @@ export class MyValidators {
     if (password === confirmPassword) return null;
 
     return { matchpassword: true };
+  }
+
+  // ASYNC VALIDATION
+  static validateCategory(service: CategoriesService) {
+    return (control: AbstractControl) => {
+      const value = control.value;
+
+      return service.checkCategory(value).pipe(
+        map((response: boolean) => {
+          console.log("🚀 ~ MyValidators ~ map ~ response:", response)
+          const isAvailable = response;
+
+          if (!isAvailable) {
+            return { validatecategory: true };
+          }
+          return null;
+        })
+      );
+    };
   }
 }
 
