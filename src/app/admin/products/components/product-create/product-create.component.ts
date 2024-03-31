@@ -13,10 +13,9 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-product-create',
   templateUrl: './product-create.component.html',
-  styleUrls: ['./product-create.component.scss']
+  styleUrls: ['./product-create.component.scss'],
 })
 export class ProductCreateComponent implements OnInit {
-
   form: FormGroup;
   image$: Observable<any>;
 
@@ -29,15 +28,13 @@ export class ProductCreateComponent implements OnInit {
     this.buildForm();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   saveProduct(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
       const product = this.form.value;
-      this.productsService.createProduct(product)
-      .subscribe((newProduct) => {
+      this.productsService.createProduct(product).subscribe((newProduct) => {
         console.log(newProduct);
         this.router.navigate(['./admin/products']);
       });
@@ -50,26 +47,27 @@ export class ProductCreateComponent implements OnInit {
     const fileRef = this.storage.ref(name);
     const task = this.storage.upload(name, file);
 
-    task.snapshotChanges()
-    .pipe(
-      finalize(() => {
-        this.image$ = fileRef.getDownloadURL();
-        this.image$.subscribe(url => {
-          console.log(url);
-          this.form.get('image').setValue(url);
-        });
-      })
-    )
-    .subscribe();
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          this.image$ = fileRef.getDownloadURL();
+          this.image$.subscribe((url) => {
+            console.log(url);
+            this.form.get('images').setValue([url]);
+          });
+        })
+      )
+      .subscribe();
   }
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      id: ['', [Validators.required]],
-      title: ['', [Validators.required]],
+      title: ['', [Validators.required, Validators.minLength(4)]],
       price: ['', [Validators.required, MyValidators.isPriceValid]],
-      image: [''],
-      description: ['', [Validators.required]],
+      images: [''],
+      categoryId: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.minLength(4)]],
     });
   }
 
@@ -77,4 +75,7 @@ export class ProductCreateComponent implements OnInit {
     return this.form.get('price');
   }
 
+  get titleField() {
+    return this.form.get('title');
+  }
 }

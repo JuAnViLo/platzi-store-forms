@@ -18,7 +18,7 @@
               class="messages"
               *ngIf="nameField.touched && nameField.invalid"
             >
-              <mat-error *ngIf="nameField.hasError('validatecategory')">
+              <mat-error *ngIf="nameField.hasError('minlenght')">
                 El nombre ya existe
               </mat-error>
               <mat-error *ngIf="nameField.hasError('required')">
