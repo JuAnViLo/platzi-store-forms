@@ -32,6 +32,12 @@ export class CategoriesService {
       data
     );
   }
+
+  deleteCategory(id: string) {
+    return this.http.delete<Category[]>(
+      `${environment.url_api}/categories/${id}`
+    );
+  }
   // WITH API
   // checkCategory(name: string) {
   //   return this.http.post<Category[]>(

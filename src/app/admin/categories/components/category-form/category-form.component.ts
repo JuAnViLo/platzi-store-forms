@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { MyValidators } from '../../../../utils/validators';
 import { CategoriesService } from './../../../../core/services/categories.service';
+import { Category } from '../../../../core/models/category.model';
 
 @Component({
   selector: 'app-category-form',
@@ -18,27 +18,28 @@ import { CategoriesService } from './../../../../core/services/categories.servic
   styleUrls: ['./category-form.component.scss'],
 })
 export class CategoryFormComponent implements OnInit {
+  @Input() set category(data: Category) {
+    if (data) {
+      this.isNew = false;
+      this.form.patchValue(data);
+    }
+  }
+
+  @Output() create = new EventEmitter();
+  @Output() update = new EventEmitter();
+
   form: FormGroup;
-  categoryId: string;
+  isNew: boolean = true;
 
   constructor(
     private fb: FormBuilder,
     private categoriesService: CategoriesService,
-    private router: Router,
-    private storage: AngularFireStorage,
-    private route: ActivatedRoute
+    private storage: AngularFireStorage
   ) {
     this.buildFrom();
   }
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
-      this.categoryId = params.id;
-      if (this.categoryId) {
-        this.getCategory();
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   private buildFrom() {
     this.form = this.fb.group({
@@ -57,37 +58,13 @@ export class CategoryFormComponent implements OnInit {
       return;
     }
 
-    if (this.categoryId) {
-      this.updateCategory();
+    const data = this.form.value;
+
+    if (this.isNew) {
+      this.create.emit(data);
     } else {
-      this.createCategory();
+      this.update.emit(data);
     }
-  }
-
-  private createCategory() {
-    const data = this.form.value;
-
-    this.categoriesService.createCategory(data).subscribe((rta) => {
-      this.router.navigate(['./admin/categories']);
-    });
-  }
-
-  private updateCategory() {
-    const data = this.form.value;
-    console.log("🚀 ~ CategoryFormComponent ~ updateCategory ~ data:", data)
-
-    this.categoriesService
-      .updateCategory(this.categoryId, data)
-      .subscribe((rta) => {
-        console.log("🚀 ~ CategoryFormComponent ~ .subscribe ~ rta:", rta)
-        this.router.navigate(['./admin/categories']);
-      });
-  }
-
-  private getCategory() {
-    this.categoriesService.getCategory(this.categoryId).subscribe((data) => {
-      this.form.patchValue(data);
-    });
   }
 
   get nameField(): AbstractControl {

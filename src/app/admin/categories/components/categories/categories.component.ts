@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoriesService } from '../../../../core/services/categories.service';
+import { Router } from '@angular/router';
 import { Category } from '../../../../core/models/category.model';
+import { CategoriesService } from '../../../../core/services/categories.service';
 
 @Component({
   selector: 'app-categories',
@@ -11,7 +12,10 @@ export class CategoriesComponent implements OnInit {
   categories: Category[] = [];
   displayedColumns: string[] = ['id', 'name', 'image', 'actions'];
 
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(
+    private categoriesService: CategoriesService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getCategories();
@@ -20,6 +24,13 @@ export class CategoriesComponent implements OnInit {
   private getCategories() {
     this.categoriesService.getAllCategories().subscribe((categories) => {
       this.categories = categories;
+    });
+  }
+
+  public deleteCategory(id: string) {
+    this.categoriesService.deleteCategory(id).subscribe((rta) => {
+      this.router.navigate(['./admin/categories']);
+      this.getCategories();
     });
   }
 }
